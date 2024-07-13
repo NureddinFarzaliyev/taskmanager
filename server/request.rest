@@ -1,10 +1,11 @@
 // hello world
 GET http://localhost:3000/
 
-######
+#####
 
-// get all users
-GET http://localhost:3000/users
+// Getting data from user
+GET http://localhost:3000/users/6692964092f7e47e86542740
+Content-Type: application/json
 
 #####
 
@@ -13,8 +14,8 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "username": "user10",
-    "password": "pass10"
+    "username": "user12",
+    "password": "pass12"
 }
 
 ####
@@ -24,22 +25,19 @@ GET http://localhost:3000/users/login/
 Content-Type: application/json
 
 {
-    "username": "user10",
-    "password": "pass10"
+    "username": "user12",
+    "password": "pass12"
 }
 
 ####
 
 // to add a task
-// This request has an authentication system. 
-// changerId is the id of the user who tries to modify
-PUT http://localhost:3000/tasks/66927d9e9c7770d4a17e0973
+PUT http://localhost:3000/tasks/6692a8f6350b162893b2c913
 Content-Type: application/json
 
 {
-    "changerId": "66927d9e9c7770d4a17e0973", 
-    "taskName": "user10task3",
-    "taskDescription": "user10task3",
+    "taskName": "user12task1",
+    "taskDescription": "taskdescription",
     "taskDue": "12.04.2024",
     "taskTags": []
 }
@@ -47,70 +45,56 @@ Content-Type: application/json
 #####
 
 // To delete a task
-PUT http://localhost:3000/tasks/delete/6692104a6974f5608e7a4882
+PUT http://localhost:3000/tasks/delete/6692a8f6350b162893b2c913
 Content-Type: application/json
 
 {
-    "changerId": "6692104a6974f5608e7a4882",
-    "deletedTaskId": 3
+    "deletedTaskId": 1
 }
 
 #######
 
 // to add a tag
-// This request has an authentication system. 
-// changerId is the id of the user who tries to modify
-PUT http://localhost:3000/users/tags/66927d9e9c7770d4a17e0973
+PUT http://localhost:3000/users/tags/6692a8f6350b162893b2c913
 Content-Type: application/json
 
 {
-    "changerId": "66927d9e9c7770d4a17e0973",
-    "tagName": "user10tag3",
+    "tagName": "user12tag1",
     "tagColor": "red"
 }
 
 #####
 
 // to delete a tag
-PUT http://localhost:3000/users/tags/delete/669219c6cfcb5589e192b094
+PUT http://localhost:3000/users/tags/delete/6692a8f6350b162893b2c913
 Content-Type: application/json
 
 {
-    "changerId": "669219c6cfcb5589e192b094",
-    "deletedTagId": 0
+    "deletedTagId": 1
 }
 
 
 #####
 
 // Adding existing usertag to task
-PUT http://localhost:3000/tasks/tags/add/66927d9e9c7770d4a17e0973
+PUT http://localhost:3000/tasks/tags/add/6692a8f6350b162893b2c913
 Content-Type: application/json
 
 {
-    "changerId": "66927d9e9c7770d4a17e0973",
-    "addTagTo": 1,
-    "addedTag": 2
+    "addTagTo": 0,
+    "addedTag": 0
 }
 
 ####
 
 // Deleting tag from task
-PUT http://localhost:3000/tasks/tags/delete/66927d9e9c7770d4a17e0973
+PUT http://localhost:3000/tasks/tags/delete/6692a8f6350b162893b2c913
 Content-Type: application/json
 
 {
-    "changerId": "66927d9e9c7770d4a17e0973",
-    "deleteTagFrom": 2,
+    "deleteTagFrom": 0,
     "deletedTag": 0
 }
 
-#####
 
-// Getting data from user
-GET http://localhost:3000/users/669219c6cfcb5589e192b094
-Content-Type: application/json
-
-{
-    "changerId": "66927d9e9c7770d4a17e0973"
-}
+###

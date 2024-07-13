@@ -71,7 +71,7 @@ app.post('/users', async (req, res) => {
         await user.save()
 
         res.status(201)
-        res.send(user)
+        res.send(`New user - ${req.body.username} is created `)
 
         console.log(`${user.username} sent to database`)
 
@@ -121,21 +121,13 @@ class TaskClass{
 
 app.put('/tasks/:user_id', async (req, res) => {
     try {
-        // user validation
-        const ifAuthorized = req.params.user_id == req.body.changerId
-        
-        if(ifAuthorized){
-            // adding task to array
-            const newTask = new TaskClass(req.body.taskName, req.body.taskDescription, req.body.taskDue, req.body.taskTags)
+        // adding task to array
+        const newTask = new TaskClass(req.body.taskName, req.body.taskDescription, req.body.taskDue, req.body.taskTags)
 
-            await User.updateOne({_id: req.params.user_id}, {$push: { tasks: newTask }})
+        await User.updateOne({_id: req.params.user_id}, {$push: { tasks: newTask }})
 
-            res.status(201)
-            res.send(req.body)
-
-        }else{
-            res.status(401).send()
-        }
+        res.status(201)
+        res.send(`New Task - ${req.body.taskName} is added to user ${req.params.user_id}`)
 
     } catch (error) {
         res.send(error)
@@ -145,22 +137,14 @@ app.put('/tasks/:user_id', async (req, res) => {
 // deleting task
 app.put('/tasks/delete/:user_id/', async (req, res) => {
     try {
-        const ifAuthorized = req.params.user_id == req.body.changerId
+        const wantedUser = await User.findOne({"_id": req.params.user_id})
+        let tasks = wantedUser.tasks
+        tasks.splice(req.body.deletedTaskId, 1) // deleting task according to index number
+        
+        await User.updateOne({"_id": req.params.user_id}, {"tasks": tasks}) // updating tasks
 
-        if(ifAuthorized){
-            const wantedUser = await User.findOne({"_id": req.params.user_id})
-            let tasks = wantedUser.tasks
-            tasks.splice(req.body.deletedTaskId, 1) // deleting task according to index number
-            
-            await User.updateOne({"_id": req.params.user_id}, {"tasks": tasks}) // updating tasks
-
-            res.status(200)
-            res.send(tasks)
-        }else{
-            res.status(401)
-            res.send()
-        }
-
+        res.status(200)
+        res.send(`Task is deleted from ${req.params.user_id}`)  
     } catch (error) {
         res.send(error)
     }
@@ -176,16 +160,10 @@ class Tag{
 
 app.put('/users/tags/:user_id', async (req, res) => {
     try {
-        const ifAuthorized = req.params.user_id == req.body.changerId
-
-        if(ifAuthorized){
-            const newTag = new Tag(req.body.tagName, req.body.tagColor)
-            await User.updateOne({_id: req.params.user_id,}, {$push: {tags: newTag}})
-            res.status(201)
-            res.send(req.body)
-        }else{
-            res.status(401).send()
-        }
+        const newTag = new Tag(req.body.tagName, req.body.tagColor)
+        await User.updateOne({_id: req.params.user_id,}, {$push: {tags: newTag}})
+        res.status(201)
+        res.send(`New tag - ${req.body.tagName} is added to user ${req.params.user_id}`)
     } catch (error) {
         res.send(error)
     }
@@ -194,22 +172,13 @@ app.put('/users/tags/:user_id', async (req, res) => {
 // deleting user tag
 app.put('/users/tags/delete/:user_id' , async (req, res) => {
     try {
-        const ifAuthorized = req.params.user_id == req.body.changerId
+        const wantedUser = await User.findOne({"_id": req.params.user_id})
+        let tags = wantedUser.tags
+        tags.splice(req.body.deletedTagId, 1)
+        await User.updateOne({"_id": req.params.user_id}, {"tags": tags})
 
-        if(ifAuthorized){
-            const wantedUser = await User.findOne({"_id": req.params.user_id})
-            let tags = wantedUser.tags
-            tags.splice(req.body.deletedTagId, 1)
-            await User.updateOne({"_id": req.params.user_id}, {"tags": tags})
-
-            res.status(200)
-            res.send(tags)
-
-        }else{
-            res.status(401)
-            res.send()
-        }
-
+        res.status(200)
+        res.send(`Tag is deleted from user ${req.params.user_id}`)
     } catch (error) {
         res.send(error)
     }
@@ -218,25 +187,16 @@ app.put('/users/tags/delete/:user_id' , async (req, res) => {
 // adding tag to task
 app.put('/tasks/tags/add/:user_id', async (req, res) => {
     try {
-        const ifAuthorized = req.params.user_id == req.body.changerId;
+        const user = await User.findOne({"_id": req.params.user_id})
+        const addedTag = await user.tags[req.body.addedTag]
 
-        if(ifAuthorized){
-            const user = await User.findOne({"_id": req.params.user_id})
-            const addedTag = await user.tags[req.body.addedTag]
+        let userTasks = user.tasks 
+        let taskTags = userTasks[req.body.addTagTo].taskTags 
+        taskTags.push(addedTag) 
 
-            let userTasks = user.tasks 
-            let taskTags = userTasks[req.body.addTagTo].taskTags 
-            taskTags.push(addedTag) 
-
-            await User.updateOne({"_id": req.params.user_id}, {"tasks": userTasks})
-            res.status(200)
-            res.send(userTasks)
-        }else{
-            res.status(401)
-            res.send()
-        }
-
-
+        await User.updateOne({"_id": req.params.user_id}, {"tasks": userTasks})
+        res.status(200)
+        res.send(`Tag is added to task (User ${req.params.user_id})`)
     } catch (error) {
         res.send(error)
     }
@@ -245,23 +205,15 @@ app.put('/tasks/tags/add/:user_id', async (req, res) => {
 // deleting tag from task
 app.put('/tasks/tags/delete/:user_id', async (req, res) => {
     try {
-        const ifAuthorized = req.params.user_id == req.body.changerId;
+        const user = await User.findOne({"_id": req.params.user_id})
 
-        if(ifAuthorized){
-            const user = await User.findOne({"_id": req.params.user_id})
+        let userTasks = user.tasks 
+        let taskTags = userTasks[req.body.deleteTagFrom].taskTags 
+        taskTags.splice(req.body.deletedTag) 
 
-            let userTasks = user.tasks 
-            let taskTags = userTasks[req.body.deleteTagFrom].taskTags 
-            taskTags.splice(req.body.deletedTag) 
-
-            await User.updateOne({"_id": req.params.user_id}, {"tasks": userTasks})
-            res.status(200)
-            res.send(userTasks)
-        }else{
-            res.status(401)
-            res.send(401)
-        }
-
+        await User.updateOne({"_id": req.params.user_id}, {"tasks": userTasks})
+        res.status(200)
+        res.send(`Tag is deleted from task (User ${req.params.user_id})`)
     } catch (error) {
         res.send(error)
     }
@@ -271,18 +223,11 @@ app.put('/tasks/tags/delete/:user_id', async (req, res) => {
 
 app.get('/users/:user_id', async (req, res) => {
     try {
-        const ifAuthorized = req.params.user_id == req.body.changerId
+        const userData = await User.findOne({"_id": req.params.user_id})
+        res.status(200)
+        res.send(userData)
 
-        if(ifAuthorized){
-            const userData = await User.findOne({"_id": req.params.user_id})
-            res.status(200)
-            res.send(userData)
-        }else{
-            res.status(401)
-            res.send()
-        }
     } catch (error) {
         res.send(error)
     }
-
 })
