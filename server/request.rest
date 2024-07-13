@@ -13,8 +13,8 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "username": "user6",
-    "password": "pass6"
+    "username": "user9",
+    "password": "pass9"
 }
 
 ####
@@ -24,6 +24,22 @@ GET http://localhost:3000/users/login/
 Content-Type: application/json
 
 {
-    "username": "user6",
-    "password": "pass6"
+    "username": "user9",
+    "password": "pass9"
+}
+
+####
+
+// to add a task (example is user7)
+// This request has an authentication system. 
+// changerId is the id of the user who tries to modify
+PUT http://localhost:3000/tasks/669219c6cfcb5589e192b094
+Content-Type: application/json
+
+{
+    "changerId": "669219c6cfcb5589e192b094", 
+    "taskName": "taskname2",
+    "taskDescription": "IKIREM ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet",
+    "taskDue": "12.04.2024",
+    "taskTags": []
 }

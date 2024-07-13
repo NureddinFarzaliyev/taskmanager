@@ -27,6 +27,8 @@ app.get('/users', (req, res) => {
     res.send('users')
 })
 
+// ! USER AUTHENTICATION
+
 // Schema for user
 const userSchema = new mongoose.Schema({
     username: {
@@ -35,6 +37,14 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
+        required: true
+    },
+    tasks: {
+        type: Array,
+        required: true
+    },
+    tags: {
+        type: Array,
         required: true
     }
 });
@@ -57,7 +67,9 @@ app.post('/users', async (req, res) => {
         // creating user and saving to database
         const user = new User({
             username: req.body.username,
-            password: hash
+            password: hash,
+            tasks: [],
+            tags: []
         })
 
         await user.save()
@@ -98,3 +110,48 @@ app.get('/users/login/', async (req, res) => {
         res.send(error.message)
     }
 })
+
+// ! TASK MANAGEMENT
+
+// ! ADDING TASKS / USERTAGS / TASKTAGS
+
+// adding new task
+class TaskClass{
+    constructor(taskName, taskDescription, taskDue, taskTags){
+        this.taskName = taskName,
+        this.taskDescripton = taskDescription,
+        this.taskDue = taskDue,
+        this.taskTags = taskTags
+    }
+}
+
+app.put('/tasks/:user_id', async (req, res) => {
+    try {
+        // user validation
+        const ifAuthorizedTask = req.params.user_id == req.body.changerId
+        
+        if(ifAuthorizedTask){
+            // adding task to array
+            const newTask = new TaskClass(req.body.taskName, req.body.taskDescription, req.body.taskDue, req.body.taskTags)
+
+            await User.updateOne(
+                {_id: req.params.user_id},
+                {$push: { tasks: newTask }}
+            )
+
+            res.send(req.body)
+
+        }else{
+            res.status(401).send()
+        }
+
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+// adding user tag
+
+
+
+// ! FETCH USER DATA
