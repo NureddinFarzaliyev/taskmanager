@@ -89,7 +89,7 @@ Content-Type: application/json
 
 {
     "changerId": "66927d9e9c7770d4a17e0973",
-    "addTagTo": 2,
+    "addTagTo": 1,
     "addedTag": 2
 }
 
@@ -103,4 +103,14 @@ Content-Type: application/json
     "changerId": "66927d9e9c7770d4a17e0973",
     "deleteTagFrom": 2,
     "deletedTag": 0
+}
+
+#####
+
+// Getting data from user
+GET http://localhost:3000/users/669219c6cfcb5589e192b094
+Content-Type: application/json
+
+{
+    "changerId": "66927d9e9c7770d4a17e0973"
 }
