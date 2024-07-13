@@ -30,7 +30,7 @@ Content-Type: application/json
 
 ####
 
-// to add a task (example is user7)
+// to add a task
 // This request has an authentication system. 
 // changerId is the id of the user who tries to modify
 PUT http://localhost:3000/tasks/669219c6cfcb5589e192b094
@@ -42,4 +42,17 @@ Content-Type: application/json
     "taskDescription": "IKIREM ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet",
     "taskDue": "12.04.2024",
     "taskTags": []
+}
+
+#######
+
+// to add a tag
+
+PUT http://localhost:3000/users/tags/669219c6cfcb5589e192b094
+Content-Type: application/json
+
+{
+    "changerId": "669219c6cfcb5589e192b094",
+    "tagName": "tag3",
+    "tagColor": "red"
 }

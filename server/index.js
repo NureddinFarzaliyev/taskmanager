@@ -150,8 +150,37 @@ app.put('/tasks/:user_id', async (req, res) => {
     }
 })
 
-// adding user tag
+// deleting task
 
+// adding new user tag
+class Tag{
+    constructor(tagName, tagColor){
+        this.tagName = tagName,
+        this.tagColor = tagColor
+    }
+}
+
+app.put('/users/tags/:user_id', async (req, res) => {
+    try {
+        const ifAuthorizedTag = req.params.user_id == req.body.changerId
+
+        if(ifAuthorizedTag){
+            const newTag = new Tag(req.body.tagName, req.body.tagColor)
+            await User.updateOne({_id: req.params.user_id,}, {$push: {tags: newTag}})
+            res.send(req.body)
+        }else{
+            res.status(401).send()
+        }
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+// deleting user tag
+
+// adding tag to task
+
+// deleting tag from task
 
 
 // ! FETCH USER DATA
