@@ -13,8 +13,8 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "username": "user9",
-    "password": "pass9"
+    "username": "user10",
+    "password": "pass10"
 }
 
 ####
@@ -24,8 +24,8 @@ GET http://localhost:3000/users/login/
 Content-Type: application/json
 
 {
-    "username": "user9",
-    "password": "pass9"
+    "username": "user10",
+    "password": "pass10"
 }
 
 ####
@@ -33,26 +33,74 @@ Content-Type: application/json
 // to add a task
 // This request has an authentication system. 
 // changerId is the id of the user who tries to modify
-PUT http://localhost:3000/tasks/669219c6cfcb5589e192b094
+PUT http://localhost:3000/tasks/66927d9e9c7770d4a17e0973
 Content-Type: application/json
 
 {
-    "changerId": "669219c6cfcb5589e192b094", 
-    "taskName": "taskname2",
-    "taskDescription": "IKIREM ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet",
+    "changerId": "66927d9e9c7770d4a17e0973", 
+    "taskName": "user10task3",
+    "taskDescription": "user10task3",
     "taskDue": "12.04.2024",
     "taskTags": []
+}
+
+#####
+
+// To delete a task
+PUT http://localhost:3000/tasks/delete/6692104a6974f5608e7a4882
+Content-Type: application/json
+
+{
+    "changerId": "6692104a6974f5608e7a4882",
+    "deletedTaskId": 3
 }
 
 #######
 
 // to add a tag
+// This request has an authentication system. 
+// changerId is the id of the user who tries to modify
+PUT http://localhost:3000/users/tags/66927d9e9c7770d4a17e0973
+Content-Type: application/json
 
-PUT http://localhost:3000/users/tags/669219c6cfcb5589e192b094
+{
+    "changerId": "66927d9e9c7770d4a17e0973",
+    "tagName": "user10tag3",
+    "tagColor": "red"
+}
+
+#####
+
+// to delete a tag
+PUT http://localhost:3000/users/tags/delete/669219c6cfcb5589e192b094
 Content-Type: application/json
 
 {
     "changerId": "669219c6cfcb5589e192b094",
-    "tagName": "tag3",
-    "tagColor": "red"
+    "deletedTagId": 0
+}
+
+
+#####
+
+// Adding existing usertag to task
+PUT http://localhost:3000/tasks/tags/add/66927d9e9c7770d4a17e0973
+Content-Type: application/json
+
+{
+    "changerId": "66927d9e9c7770d4a17e0973",
+    "addTagTo": 2,
+    "addedTag": 2
+}
+
+####
+
+// Deleting tag from task
+PUT http://localhost:3000/tasks/tags/delete/66927d9e9c7770d4a17e0973
+Content-Type: application/json
+
+{
+    "changerId": "66927d9e9c7770d4a17e0973",
+    "deleteTagFrom": 2,
+    "deletedTag": 0
 }
