@@ -84,36 +84,118 @@ const getUserData = (username) => {
     .then(data => loadUserPage(data))   
 }
 
+let tags = []
+let user_id = ''
+let username = ''
+
 // load user page after correct login
 const loadUserPage = (data) => {
     // get user id
-    const user_id = data._id
+    user_id = data._id
+    username = data.username
+    console.log(data)
 
-    // disable login screen
+    tags = data.tags
+    // console.log(tags)
+
+    // disable login screen and enable user screen
     document.querySelector('.auth').style.display = 'none';
+    document.querySelector('.user').classList.remove('hidden')
 
-    // add user data to frontend
 
     // username
-    document.querySelector('.user').textContent = `Username: ${data.username}`
+    document.querySelector('.username').textContent = `Welcome, ${data.username}!`
 
     // tasks
+    const tasks = data.tasks.reverse()
 
-
-
+    tasks.forEach(task => {
+        displayTasks(task.taskName, task.taskDue, task.taskDescription, task.taskTags)
+        console.log(task.taskDescription)
+    })
+    
     // tags
 }
 
+// function to display tasks on html
+const displayTasks = (name, due, description, tags) => {
+    const task = document.createElement('div')
+    task.classList.add('task')
 
-// const createNewTask = (name, due, tags) => {
-//     const tasksContainer = document.querySelector('.tasks')
+    const nameItem = document.createElement('h1')
+    nameItem.textContent = name
+    nameItem.classList.add('task-name')
+    task.appendChild(nameItem)
 
-//     const nameItem = document.createElement('p')
-//     nameItem.textContent = name
-//     nameItem.classList.add('task-name')
-//     tasksContainer.appendChild(nameItem)
+    const descriptionItem = document.createElement('div')
+    descriptionItem.textContent = description
+    descriptionItem.classList.add('description-text')
+    task.appendChild(descriptionItem)
 
-//     const descriptionItem = document.createElement('div')
+    const dueItem = document.createElement('div')
+    dueItem.textContent = due
+    dueItem.classList.add('due-name')
+    task.appendChild(dueItem)
 
+    const tagsContainer = document.createElement('div')
+    tagsContainer.classList.add('tags-container')
+    task.appendChild(tagsContainer)
+    
+    if(tags){
+        tags.forEach(tag => {
+            if(tag){
+                const tagItem = document.createElement('div')
+                tagItem.textContent = tag.tagName
+                tagItem.style.backgroundColor = tag.tagColor
+                tagsContainer.appendChild(tagItem)
+            }
+        })
+    }
 
-// }
+    document.querySelector('.tasks-container').appendChild(task)
+}
+
+// ! ADDING NEW TASKS
+
+// posting new task to database
+const postNewTask = (name, description, due, id) => {
+    fetch(`${BASE_URL}/tasks/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+            "taskName": name,
+            "taskDescription": description,
+            "taskDue": due,
+            "taskTags": []
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    }).then(updateTasks)
+}
+
+document.querySelector('.add-task-button').addEventListener('click', () => {
+    const name = document.querySelector('.new-task-name')
+    const due = document.querySelector('.new-task-due')
+    const description = document.querySelector('.new-task-description')
+    // Name value must be given
+    if(name.value == ''){
+        document.querySelector('.new-task-alert').textContent = 'Task name must be declared.'
+        setTimeout(() => {
+            document.querySelector('.new-task-alert').textContent = ''
+        }, 2000)
+    }else{
+        postNewTask(name.value, due.value, description.value, user_id)
+    }
+    console.log(user_id)
+    name.value = ''; due.value = ''; description.value = '';
+})
+
+// update tasks html
+const updateTasks = () => {
+    document.querySelector('.tasks-container').innerHTML = '';
+    setTimeout(() => {
+        getUserData(username)
+    }, 1500)
+}
+
+document.querySelector('.update-tasks').addEventListener('click', updateTasks)

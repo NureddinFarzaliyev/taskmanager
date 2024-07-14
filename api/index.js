@@ -115,7 +115,7 @@ app.post('/users/login/', async (req, res) => {
 class TaskClass{
     constructor(taskName, taskDescription, taskDue, taskTags){
         this.taskName = taskName,
-        this.taskDescripton = taskDescription,
+        this.taskDescription = taskDescription,
         this.taskDue = taskDue,
         this.taskTags = taskTags
     }
@@ -129,6 +129,7 @@ app.put('/tasks/:user_id', async (req, res) => {
         await User.updateOne({_id: req.params.user_id}, {$push: { tasks: newTask }})
 
         res.status(201)
+        res.setHeader('Access-Control-Allow-Origin', '*')
         res.send(JSON.stringify(`New Task - ${req.body.taskName} is added to user ${req.params.user_id}`))
 
     } catch (error) {
@@ -198,7 +199,7 @@ app.put('/tasks/tags/add/:user_id', async (req, res) => {
 
         await User.updateOne({"_id": req.params.user_id}, {"tasks": userTasks})
         res.status(200)
-        res.send(`Tag is added to task (User ${req.params.user_id})`)
+        res.send(JSON.stringify(`Tag is added to task (User ${req.params.user_id})`))
     } catch (error) {
         res.send(error)
     }

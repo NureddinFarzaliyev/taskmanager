@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -24,12 +25,24 @@
     </div>
     
 
-    <div class="user">
-        <h1>username</h1>
+    <div class="user hidden">
+        <h1 class="username"> </h1>
 
-        <div class="tasks">
-            
+        <div class="addNewTask">
+            <input type="text" name="new-task-name" class="new-task-name" placeholder="name">
+            <input type="date" name="new-task-due" class="new-task-due">
+            <textarea name="new-task-description" class="new-task-description" cols="30" rows="10" placeholder="description"></textarea>
+            <button type="submit" class="add-task-button">Add Task</button>
+            <p class="new-task-alert"></p>
         </div>
+
+        
+        <button class="update-tasks">Update tasks</button>
+
+        <div class="tasks-container">
+
+        </div>
+
     </div>
 
 

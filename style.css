@@ -1,3 +1,25 @@
+.task{
+    color: black;
+    border: solid black;
+    margin: 10px;
+}
+
 .task-name{
     color: black;
+}
+
+.due-name{
+    color: black;
+}
+
+.tags-container{
+    color: black;
+}
+
+.description-text{
+    color: black;
+}
+
+.hidden{
+    display: none;
 }

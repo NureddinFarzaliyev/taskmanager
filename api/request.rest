@@ -32,11 +32,12 @@ Content-Type: application/json
 ####
 
 // to add a task
-PUT http://localhost:3000/tasks/6692a8f6350b162893b2c913
+PUT http://localhost:3000/tasks/6693a2e995865b891d5f284f
 Content-Type: application/json
+Access-Control-Allow-Origin: "*"
 
 {
-    "taskName": "user12task1",
+    "taskName": "test3",
     "taskDescription": "taskdescription",
     "taskDue": "12.04.2024",
     "taskTags": []
@@ -45,7 +46,7 @@ Content-Type: application/json
 #####
 
 // To delete a task
-PUT http://localhost:3000/tasks/delete/6692a8f6350b162893b2c913
+PUT http://localhost:3000/tasks/delete/6693a2e995865b891d5f284f
 Content-Type: application/json
 
 {
@@ -55,18 +56,18 @@ Content-Type: application/json
 #######
 
 // to add a tag
-PUT http://localhost:3000/users/tags/6692a8f6350b162893b2c913
+PUT http://localhost:3000/users/tags/6693a2e995865b891d5f284f
 Content-Type: application/json
 
 {
-    "tagName": "user12tag1",
-    "tagColor": "red"
+    "tagName": "testtag2",
+    "tagColor": "green"
 }
 
 #####
 
 // to delete a tag
-PUT http://localhost:3000/users/tags/delete/6692a8f6350b162893b2c913
+PUT http://localhost:3000/users/tags/delete/6693a2e995865b891d5f284f
 Content-Type: application/json
 
 {
@@ -77,24 +78,26 @@ Content-Type: application/json
 #####
 
 // Adding existing usertag to task
-PUT http://localhost:3000/tasks/tags/add/6692a8f6350b162893b2c913
+PUT http://localhost:3000/tasks/tags/add/6693a2e995865b891d5f284f
 Content-Type: application/json
 
 {
-    "addTagTo": 0,
-    "addedTag": 0
+    "addTagTo": 1,
+    "addedTag": 2
 }
 
 ####
 
 // Deleting tag from task
-PUT http://localhost:3000/tasks/tags/delete/6692a8f6350b162893b2c913
+PUT http://localhost:3000/tasks/tags/delete/6693a2e995865b891d5f284f
 Content-Type: application/json
 
 {
-    "deleteTagFrom": 0,
-    "deletedTag": 0
+    "deleteTagFrom": 1,
+    "deletedTag": 4
 }
 
 
 ###
+
+// fetch user tasks
