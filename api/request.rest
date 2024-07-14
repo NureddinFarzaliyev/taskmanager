@@ -4,7 +4,7 @@ GET http://localhost:3000/
 #####
 
 // Getting data from user
-GET http://localhost:3000/users/6692a8f6350b162893b2c913
+GET http://localhost:3000/users/admin
 Content-Type: application/json
 
 #####
@@ -21,7 +21,7 @@ Content-Type: application/json
 ####
 
 // to login the user
-GET http://localhost:3000/users/login/
+POST http://localhost:3000/users/login/
 Content-Type: application/json
 
 {

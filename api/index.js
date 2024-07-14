@@ -5,8 +5,10 @@ const app = express()
 
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs') 
+const cors = require('cors')
 
 app.use(express.json())
+app.use(cors())
 
 const port = 3000
 app.listen(port, () => {
@@ -54,7 +56,7 @@ app.post('/users', async (req, res) => {
         // checking if username already exists
         const existingUser = await User.findOne({username: req.body.username});
         if(existingUser){
-            return(res.status(500).send({error: 'Username already exists'}))
+            return(res.send(JSON.stringify(false)))
         }
         
         // hashing password to make it safe
@@ -71,7 +73,7 @@ app.post('/users', async (req, res) => {
         await user.save()
 
         res.status(201)
-        res.send(`New user - ${req.body.username} is created `)
+        res.send(JSON.stringify(`New user - ${req.body.username} is created `))
 
         console.log(`${user.username} sent to database`)
 
@@ -82,7 +84,7 @@ app.post('/users', async (req, res) => {
 })
 
 // User login request with password and username 
-app.get('/users/login/', async (req, res) => {
+app.post('/users/login/', async (req, res) => {
     try {
         // finding corresponding password for specified username
         const userPassword = await User.findOne({username: req.body.username})
@@ -92,18 +94,18 @@ app.get('/users/login/', async (req, res) => {
 
             if(isCorrect){
                 res.status(200)
-                res.send('Login Allowed') 
+                res.send(JSON.stringify(true))
             }else{
                 res.status(500)
-                res.send('Invalid Password')
+                res.send(JSON.stringify('Invalid Password'))
             }
             
         }else{
             res.status(500)
-            res.send('Invalid Username') 
+            res.send(JSON.stringify('Invalid Username')) 
         }
     } catch (error) {
-        res.send(error.message)
+        res.send(error)
     }
 })
 
@@ -127,7 +129,7 @@ app.put('/tasks/:user_id', async (req, res) => {
         await User.updateOne({_id: req.params.user_id}, {$push: { tasks: newTask }})
 
         res.status(201)
-        res.send(`New Task - ${req.body.taskName} is added to user ${req.params.user_id}`)
+        res.send(JSON.stringify(`New Task - ${req.body.taskName} is added to user ${req.params.user_id}`))
 
     } catch (error) {
         res.send(error)
@@ -221,9 +223,9 @@ app.put('/tasks/tags/delete/:user_id', async (req, res) => {
 
 // ! FETCH USER DATA
 
-app.get('/users/:user_id', async (req, res) => {
+app.get('/users/:username', async (req, res) => {
     try {
-        const userData = await User.findOne({"_id": req.params.user_id})
+        const userData = await User.findOne({"username": req.params.username})
         res.status(200)
         res.send(userData)
 
