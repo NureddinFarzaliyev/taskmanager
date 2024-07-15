@@ -147,7 +147,7 @@ app.put('/tasks/delete/:user_id/', async (req, res) => {
         await User.updateOne({"_id": req.params.user_id}, {"tasks": tasks}) // updating tasks
 
         res.status(200)
-        res.send(`Task is deleted from ${req.params.user_id}`)  
+        res.send(JSON.stringify(`Task is deleted from ${req.params.user_id}`))  
     } catch (error) {
         res.send(error)
     }
@@ -161,7 +161,7 @@ class Tag{
     }
 }
 
-app.put('/users/tags/:user_id', async (req, res) => {
+app.put('/users/tags/add/:user_id', async (req, res) => {
     try {
         const newTag = new Tag(req.body.tagName, req.body.tagColor)
         await User.updateOne({_id: req.params.user_id,}, {$push: {tags: newTag}})
@@ -212,11 +212,11 @@ app.put('/tasks/tags/delete/:user_id', async (req, res) => {
 
         let userTasks = user.tasks 
         let taskTags = userTasks[req.body.deleteTagFrom].taskTags 
-        taskTags.splice(req.body.deletedTag) 
+        taskTags.splice(req.body.deletedTag, 1) 
 
         await User.updateOne({"_id": req.params.user_id}, {"tasks": userTasks})
         res.status(200)
-        res.send(`Tag is deleted from task (User ${req.params.user_id})`)
+        res.send(JSON.stringify(`Tag is deleted from task (User ${req.params.user_id})`))
     } catch (error) {
         res.send(error)
     }

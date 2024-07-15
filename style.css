@@ -20,6 +20,10 @@
     color: black;
 }
 
+.delete-task-btn{
+    color: black;
+}
+
 .hidden{
     display: none;
 }

@@ -56,12 +56,12 @@ Content-Type: application/json
 #######
 
 // to add a tag
-PUT http://localhost:3000/users/tags/6693a2e995865b891d5f284f
+PUT http://localhost:3000/users/tags/add/6693b29425fdeb9e1b5cc74b
 Content-Type: application/json
 
 {
     "tagName": "testtag2",
-    "tagColor": "green"
+    "tagColor": "blue"
 }
 
 #####
@@ -78,12 +78,12 @@ Content-Type: application/json
 #####
 
 // Adding existing usertag to task
-PUT http://localhost:3000/tasks/tags/add/6693a2e995865b891d5f284f
+PUT http://localhost:3000/tasks/tags/add/6693b29425fdeb9e1b5cc74b
 Content-Type: application/json
 
 {
-    "addTagTo": 1,
-    "addedTag": 2
+    "addTagTo": 0,
+    "addedTag": 1
 }
 
 ####
