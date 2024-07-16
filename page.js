@@ -1,3 +1,5 @@
+// ! LOGIN / REGISTER PAGE
+
 const switchLogin = document.querySelector('.switch-login')
 const switchRegister = document.querySelector('.switch-register')
 const switchBg = document.querySelector('.focus-bg')
@@ -32,4 +34,24 @@ switchRegister.addEventListener('click', () => {
         login.classList.remove('shown-auth')
         login.classList.add('hidden-auth')
     }
+})
+
+// ! USER PAGE
+const newTaskContainer = document.querySelector('.addNewTask')
+
+document.querySelector('.add-new-task-btn').addEventListener('click', () => {
+    newTaskContainer.classList.remove('hidden')
+})
+
+document.querySelector('.new-task-header button').addEventListener('click', () => {
+    newTaskContainer.classList.add('hidden')
+})
+
+
+// ! CANCEL NEW TAG
+const newTagContainer = document.querySelector('.new-tag')
+
+document.querySelector('.cancel-new-tag').addEventListener('click', () => {
+    newTagContainer.classList.add('hidden')
+    console.log('hi')
 })

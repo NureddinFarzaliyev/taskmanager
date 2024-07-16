@@ -120,16 +120,28 @@ const displayTasks = (name, due, description, tags, id) => {
     const task = document.createElement('div')
     task.classList.add('task')
 
+    const taskHeader = document.createElement('div')
+    taskHeader.classList.add('task-header')
+
+    // task name
     const nameItem = document.createElement('h1')
     nameItem.textContent = name
     nameItem.classList.add('task-name')
-    task.appendChild(nameItem)
+    taskHeader.appendChild(nameItem)
 
-    const descriptionItem = document.createElement('div')
-    descriptionItem.textContent = description
-    descriptionItem.classList.add('description-text')
-    task.appendChild(descriptionItem)
+    // button to delete task
+    const deleteButton = document.createElement('button')
+    deleteButton.innerHTML = '<img src="/assets/delete.png" alt="delete">'
+    deleteButton.classList.add('delete-task-btn')
+    taskHeader.appendChild(deleteButton)
 
+    task.appendChild(taskHeader)
+
+    deleteButton.addEventListener('click', () => {
+        console.log(`task index ${id} is gonna be deleted`)
+        deleteTask(id)
+    })
+    
     // task Tags container
     const tagsContainer = document.createElement('div')
     tagsContainer.classList.add('tags-container')
@@ -141,6 +153,7 @@ const displayTasks = (name, due, description, tags, id) => {
                 const tagItem = document.createElement('div')
                 tagItem.textContent = tag.tagName
                 tagItem.style.backgroundColor = tag.tagColor
+                tagItem.classList.add('task-tag')
 
                 const deleteTagBtn = document.createElement('button')
                 deleteTagBtn.textContent = 'X'
@@ -156,9 +169,14 @@ const displayTasks = (name, due, description, tags, id) => {
 
     // list contains all tags 
     const allTagsList = document.createElement('div')
+    allTagsList.classList.add('all-tags-list')
     userTags.forEach(userTag => {
         // if(!tags.find(e => e.tagName === userTag.tagName)){
         const tagDiv = document.createElement('div')
+
+        const tagImg = document.createElement('img')
+        tagImg.setAttribute('src', "/assets/tag.png")
+        tagDiv.appendChild(tagImg)
 
         const tagBtn = document.createElement('button')
         tagBtn.textContent = userTag.tagName
@@ -169,6 +187,7 @@ const displayTasks = (name, due, description, tags, id) => {
         tagDiv.appendChild(tagBtn)
 
         const tagDelBtn = document.createElement('button')
+        tagDelBtn.classList.add('usertag-delete-button')
         tagDelBtn.textContent = 'X'
         tagDelBtn.addEventListener('click', () => {
             deleteUserTag(userTags.indexOf(userTag))
@@ -181,25 +200,22 @@ const displayTasks = (name, due, description, tags, id) => {
     })
     task.appendChild(allTagsList)    
 
+    
+    // description
+    const descriptionItem = document.createElement('div')
+    descriptionItem.textContent = description
+    descriptionItem.classList.add('description-text')
+    task.appendChild(descriptionItem)
+    
+    // due
     const dueItem = document.createElement('div')
     dueItem.textContent = due
     dueItem.classList.add('due-name')
     task.appendChild(dueItem)
 
-    // button to delete task
-    const deleteButton = document.createElement('button')
-    deleteButton.textContent = 'delete task'
-    deleteButton.classList.add('delete-task-btn')
-    task.appendChild(deleteButton)
-
-    deleteButton.addEventListener('click', () => {
-        console.log(`task index ${id} is gonna be deleted`)
-        deleteTask(id)
-    })
-
     // button to open all tags list
     const addTagBtn = document.createElement('button')
-    addTagBtn.textContent = 'add new tag to task'
+    addTagBtn.textContent = '+'
     addTagBtn.addEventListener('click', () => { 
         allTagsList.classList.toggle('hidden')
     })
@@ -249,10 +265,11 @@ document.querySelector('.add-task-button').addEventListener('click', () => {
             document.querySelector('.new-task-alert').textContent = ''
         }, 2000)
     }else{
-        postNewTask(name.value, due.value, description.value, user_id)
+        postNewTask(name.value, description.value, due.value, user_id)
     }
     console.log(user_id)
     name.value = ''; due.value = ''; description.value = '';
+    document.querySelector('.addNewTask').classList.add('hidden')
 })
 
 // ! DELETING TASKS
@@ -296,6 +313,19 @@ const deleteTagFromTask = (tagId, taskId) => {
         }
     }).then(updateTasks())
 }
+// ! DELETING USERTAG
+
+const deleteUserTag = (tagId) => {
+    fetch(`${BASE_URL}/users/tags/delete/${user_id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+            "deletedTagId": tagId
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(updateTasks)
+}
 
 // ! CREATING NEW USERTAG
 // button to create new user tag
@@ -309,6 +339,8 @@ document.querySelector('.add-new-tag').addEventListener('click', () => {
     console.log('button clicked')
 
     createNewUserTag(newTagName, newTagColor)
+
+    document.querySelector('.new-tag').classList.add('hidden')
 })
 
 const createNewUserTag = (name, color) => {
@@ -323,18 +355,4 @@ const createNewUserTag = (name, color) => {
             "Content-Type": "application/json"
         }
     }).then(updateTasks())
-}
-
-// ! DELETING USERTAG
-
-const deleteUserTag = (tagId) => {
-    fetch(`${BASE_URL}/users/tags/delete/${user_id}`, {
-        method: "PUT",
-        body: JSON.stringify({
-            "deletedTagId": tagId
-        }),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(updateTasks)
 }
