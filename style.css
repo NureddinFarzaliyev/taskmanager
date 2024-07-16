@@ -27,3 +27,169 @@
 .hidden{
     display: none;
 }
+
+
+
+:root{
+    --accent: #5138EA;
+    --accent-hover: #302094;
+    --main-bg: #222222;
+    --secondary-bg: #DDDDDD;
+    --white-bg: #FFFFFF;
+    --main-text: #000000;
+    --grey-text: #444444;
+    --font: "Merriweather Sans", sans-serif;
+}
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: var(--main-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: var(--font);
+}
+
+/* ! LOGIN PAGE */
+
+.auth{
+    background-color: var(--secondary-bg);
+    height: 400px;
+    width: 350px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 25px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.switch{
+    background-color: var(--accent);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    height: 40px;
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 300px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.switch div{
+    height: 40px;
+    width: 150px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.auth-no-focus{
+    cursor: pointer;
+}
+
+.auth-focus{
+    color: black;
+}
+
+.focus-bg{
+    height: 40px;
+    width: 150px;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    right: 150px;
+}
+
+@keyframes focusBgGoLeft {
+    0%{
+        right: 0px;
+    }100%{
+        right: 150px;
+    }
+}
+
+@keyframes focusBgGoRight {
+    0%{
+        right: 150px;
+    }100%{
+        right: 0px;
+    }
+}
+
+.focus-bg-left{
+    animation: focusBgGoLeft .2s forwards;
+}
+
+.focus-bg-right{
+    animation: focusBgGoRight .2s forwards;
+}
+
+.hidden-auth{
+    display: none;
+}
+
+.shown-auth{
+    display: block;
+}
+
+.login, .register{
+    height: 200px;
+    width: 300px;
+    margin-top: 25px;
+}
+
+#login_status{
+    color: red;
+    text-align: center;
+}
+
+#register_status{
+    text-align: center;
+}
+
+.auth-inner{
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-inner input{
+    background-color: #fff;
+    border: none;
+    height: 30px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.auth-inner label{
+    margin: 10px 0px;
+    font-size: 12px;
+}
+
+.auth-inner button {
+    margin-top: 30px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--accent);
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+    transition: backgroundColor, .2s;
+    font-size: 16px;
+}
+
+.auth-inner button:hover{
+    background-color: var(--accent-hover);
+}
