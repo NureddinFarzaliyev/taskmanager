@@ -131,7 +131,7 @@ const displayTasks = (name, due, description, tags, id) => {
 
     // button to delete task
     const deleteButton = document.createElement('button')
-    deleteButton.innerHTML = '<img src="/assets/delete.png" alt="delete">'
+    deleteButton.innerHTML = '<img src="/assets/delete.png" alt="Delete">'
     deleteButton.classList.add('delete-task-btn')
     taskHeader.appendChild(deleteButton)
 
@@ -170,6 +170,7 @@ const displayTasks = (name, due, description, tags, id) => {
     // list contains all tags 
     const allTagsList = document.createElement('div')
     allTagsList.classList.add('all-tags-list')
+    allTagsList.classList.add('hidden')
     userTags.forEach(userTag => {
         // if(!tags.find(e => e.tagName === userTag.tagName)){
         const tagDiv = document.createElement('div')
