@@ -131,7 +131,7 @@ const displayTasks = (name, due, description, tags, id) => {
 
     // button to delete task
     const deleteButton = document.createElement('button')
-    deleteButton.innerHTML = '<img src="/assets/delete.png" alt="Delete">'
+    deleteButton.innerHTML = '<img src="./assets/delete.png" alt="Delete">'
     deleteButton.classList.add('delete-task-btn')
     taskHeader.appendChild(deleteButton)
 
@@ -176,7 +176,8 @@ const displayTasks = (name, due, description, tags, id) => {
         const tagDiv = document.createElement('div')
 
         const tagImg = document.createElement('img')
-        tagImg.setAttribute('src', "/assets/tag.png")
+        tagImg.setAttribute('src', "./assets/tag.png")
+        tagImg.setAttribute('alt', " ")
         tagDiv.appendChild(tagImg)
 
         const tagBtn = document.createElement('button')
