@@ -23,6 +23,7 @@ document.querySelector('#register_btn').addEventListener('click', () => {
     const password = document.querySelector('#register_password').value
     registerUser(username, password)
     document.querySelector('#register_btn').textContent = "Loading..."
+    document.querySelector('#register_btn').disabled = true
 })
 
 // catch errors and assign them to html elements
@@ -31,6 +32,7 @@ const registerStatus = (data) => {
 
     document.querySelector('#register_password').value = '';
     document.querySelector('#register_btn').textContent = 'Register'
+    document.querySelector('#register_btn').disabled = false
 
     const registerStatus = document.querySelector('#register_status')
 
@@ -64,6 +66,7 @@ const loginFront = (data, username) => {
     }else{ // login credentials are false (status are being written on html element)
         document.querySelector('#login_status').textContent = data;
         document.querySelector('#login_btn').textContent = 'Login'
+        document.querySelector('#login_btn').disabled = false;
     }
 }
 
@@ -72,6 +75,7 @@ document.querySelector('#login_btn').addEventListener('click', async () => {
     const username = document.querySelector('#login_username').value
     const password = document.querySelector('#login_password').value
     loginUser(username, password)
+    document.querySelector('#login_btn').disabled = true;
     document.querySelector('#login_btn').textContent = 'Loading...'
     document.querySelector('#login_status').textContent = ''
 })
@@ -167,6 +171,16 @@ const displayTasks = (name, due, description, tags, id) => {
         })
     }
 
+    // button to open all tags list
+    const addTagBtn = document.createElement('button')
+    addTagBtn.textContent = '+'
+    addTagBtn.addEventListener('click', () => { 
+        allTagsList.classList.toggle('hidden')
+    })
+    tagsContainer.appendChild(addTagBtn)
+    
+    document.querySelector('.tasks-container').appendChild(task)
+
     // list contains all tags 
     const allTagsList = document.createElement('div')
     allTagsList.classList.add('all-tags-list')
@@ -210,30 +224,56 @@ const displayTasks = (name, due, description, tags, id) => {
     task.appendChild(descriptionItem)
     
     // due
-    const dueItem = document.createElement('div')
-    dueItem.textContent = due
-    dueItem.classList.add('due-name')
-    task.appendChild(dueItem)
+    const taskDate = new Date(due)
+    const currentDate = new Date()
 
-    // button to open all tags list
-    const addTagBtn = document.createElement('button')
-    addTagBtn.textContent = '+'
-    addTagBtn.addEventListener('click', () => { 
-        allTagsList.classList.toggle('hidden')
-    })
-    tagsContainer.appendChild(addTagBtn)
+    const remainingTime = findRemainingTime(taskDate, currentDate)
+
+    const dueItem = document.createElement('div')
+    dueItem.classList.add('due-container')
+    dueItem.innerHTML = `<img src="./assets/due.png" height="20" alt=" "/> <p> Due to: ${due} </p>`
     
-    document.querySelector('.tasks-container').appendChild(task)
+    const remainingItem = document.createElement('span')
+    remainingItem.textContent = `(${remainingTime})`;
+    switch (remainingTime) {
+        case "Today":
+            remainingItem.classList.add('today')
+            break;
+        case "Overdue":
+            remainingItem.classList.add('overdue')
+            break;
+        default:
+            remainingItem.classList.add('due-span')
+    }
+
+    dueItem.appendChild(remainingItem)
+    task.appendChild(dueItem)
+}
+
+const findRemainingTime = (taskDate, currentDate) => {
+    if(taskDate.getDate() == currentDate.getDate()){
+        return 'Today'
+    }else if(taskDate < currentDate){
+        console.log(taskDate.getTime(), currentDate.getTime())
+        return 'Overdue'
+    }else{
+        const timeDiff = taskDate - currentDate
+        const days = Math.ceil(timeDiff / 1000 / 60 / 60 / 24)
+        return `${days} days remaining`
+    }
 }
 
 // ! ADDING NEW TASKS
 
 // update tasks html
 const updateTasks = () => {
-    document.querySelector('.tasks-loading').textContent = 'Loading...';
+    document.querySelector('.tasks-loading').classList.toggle('hidden')
     document.querySelector('.tasks-container').textContent = ''
+    document.querySelector('.update-tasks').disabled = true;
+    
     setTimeout(() => {
-        document.querySelector('.tasks-loading').textContent = '';
+        document.querySelector('.tasks-loading').classList.toggle('hidden');
+        document.querySelector('.update-tasks').disabled = false;
         getUserData(username)
     }, 850)
 }

@@ -258,6 +258,7 @@ button{
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+    font-size: 12px;
 }
 
 .new-task-header button {
@@ -416,6 +417,23 @@ button{
     font-weight: 300;
 }
 
+.due-container{
+    display: flex;
+    gap: 8px;
+}
+
+.today{
+    color: #FF7400;
+}
+
+.overdue{
+    color: crimson;
+}
+
+.due-span{
+    color: var(--grey-text);
+}
+
 /* ! ALL TAGS LIST */
 
 .all-tags-list{
@@ -425,7 +443,6 @@ button{
     display: inline-block;
     border-radius: 10px;
     padding: 10px;
-    position: absolute;
 }
 
 .all-tags-list div {
@@ -503,4 +520,19 @@ button{
     display: block;
     color: var(--grey-text);
     font-size: 12px;
+}
+
+@keyframes loadingCircle {
+    0%{
+        transform: rotate(0deg);
+    }100%{
+        transform: rotate(360deg);
+    }
+}
+
+.tasks-loading{
+    margin-top: 10vh;
+    display: flex;
+    justify-content: center;
+    animation: loadingCircle 1.5s infinite;
 }
