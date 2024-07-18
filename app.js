@@ -123,6 +123,7 @@ const loadUserPage = (data) => {
 const displayTasks = (name, due, description, tags, id) => {
     const task = document.createElement('div')
     task.classList.add('task')
+    document.querySelector('.tasks-container').appendChild(task)
 
     const taskHeader = document.createElement('div')
     taskHeader.classList.add('task-header')
@@ -179,7 +180,6 @@ const displayTasks = (name, due, description, tags, id) => {
     })
     tagsContainer.appendChild(addTagBtn)
     
-    document.querySelector('.tasks-container').appendChild(task)
 
     // list contains all tags 
     const allTagsList = document.createElement('div')
@@ -214,9 +214,7 @@ const displayTasks = (name, due, description, tags, id) => {
         allTagsList.classList.add('hidden')
         // }
     })
-    task.appendChild(allTagsList)    
-
-    
+    addTagBtn.appendChild(allTagsList)    
     // description
     const descriptionItem = document.createElement('div')
     descriptionItem.textContent = description
@@ -224,30 +222,35 @@ const displayTasks = (name, due, description, tags, id) => {
     task.appendChild(descriptionItem)
     
     // due
-    const taskDate = new Date(due)
-    const currentDate = new Date()
+    if(!due == ''){
+        const taskDate = new Date(due)
+        const currentDate = new Date()
 
-    const remainingTime = findRemainingTime(taskDate, currentDate)
+        const remainingTime = findRemainingTime(taskDate, currentDate)
 
-    const dueItem = document.createElement('div')
-    dueItem.classList.add('due-container')
-    dueItem.innerHTML = `<img src="./assets/due.png" height="20" alt=" "/> <p> Due to: ${due} </p>`
-    
-    const remainingItem = document.createElement('span')
-    remainingItem.textContent = `(${remainingTime})`;
-    switch (remainingTime) {
-        case "Today":
-            remainingItem.classList.add('today')
-            break;
-        case "Overdue":
-            remainingItem.classList.add('overdue')
-            break;
-        default:
-            remainingItem.classList.add('due-span')
-    }
+        console.log(due == '')
 
-    dueItem.appendChild(remainingItem)
-    task.appendChild(dueItem)
+        const dueItem = document.createElement('div')
+        dueItem.classList.add('due-container')
+        dueItem.innerHTML = `<img src="./assets/due.png" height="20" alt=" "/> <p> Due to: ${due} </p>`
+        
+        const remainingItem = document.createElement('span')
+        remainingItem.textContent = `(${remainingTime})`;
+        switch (remainingTime) {
+            case "Today":
+                remainingItem.classList.add('today')
+                break;
+            case "Overdue":
+                remainingItem.classList.add('overdue')
+                break;
+            default:
+                remainingItem.classList.add('due-span')
+        }
+
+        dueItem.appendChild(remainingItem)
+        task.appendChild(dueItem)
+    }    
+
 }
 
 const findRemainingTime = (taskDate, currentDate) => {
@@ -308,10 +311,10 @@ document.querySelector('.add-task-button').addEventListener('click', () => {
         }, 2000)
     }else{
         postNewTask(name.value, description.value, due.value, user_id)
+        console.log(user_id)
+        name.value = ''; due.value = ''; description.value = '';
+        document.querySelector('.addNewTask').classList.add('hidden')
     }
-    console.log(user_id)
-    name.value = ''; due.value = ''; description.value = '';
-    document.querySelector('.addNewTask').classList.add('hidden')
 })
 
 // ! DELETING TASKS
@@ -376,12 +379,13 @@ document.querySelector('.new-tag-btn').addEventListener('click', () => {
 })
 
 document.querySelector('.add-new-tag').addEventListener('click', () => {
-    const newTagName = document.querySelector('#new-tag-name').value
-    const newTagColor = document.querySelector('#new-tag-color').value
+    const newTagName = document.querySelector('#new-tag-name')
+    const newTagColor = document.querySelector('#new-tag-color')
     console.log('button clicked')
 
-    createNewUserTag(newTagName, newTagColor)
+    createNewUserTag(newTagName.value, newTagColor.value)
 
+    newTagName.value = ''
     document.querySelector('.new-tag').classList.add('hidden')
 })
 
