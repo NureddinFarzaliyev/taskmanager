@@ -355,6 +355,27 @@ button{
     border-color: var(--accent) !important;
 }
 
+.user-tags-container{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    gap: 7px;
+    font-size: 12px;
+    color: white;
+}
+
+.user-tag{
+    height: 20px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    /* margin-top: 5px; */
+}
+
+.user-tag-hidden{
+    opacity: .5;
+}
+
 /* ! TASKS CONTAINER */
 
 .tasks-container{
@@ -414,6 +435,7 @@ button{
     margin-right: 5px;
     overflow: hidden;
     margin-top: 5px;
+    display: flex;
 }
 
 

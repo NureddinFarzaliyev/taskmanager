@@ -89,6 +89,7 @@ const getUserData = (username) => {
 }
 
 let userTags = []
+let tasks = []
 let user_id = ''
 let username = ''
 
@@ -105,18 +106,39 @@ const loadUserPage = (data) => {
     document.querySelector('.auth').style.display = 'none';
     document.querySelector('.user').classList.remove('hidden')
 
-
     // username
     document.querySelector('.username').textContent = `Welcome, ${data.username}!`
 
     // tasks
-    const tasks = data.tasks.reverse()
-
+    tasks = data.tasks.reverse()
     tasks.forEach(task => {
         displayTasks(task.taskName, task.taskDue, task.taskDescription, task.taskTags, data.tasks.length - data.tasks.indexOf(task) - 1)
     })
     
     // tags
+    createSortTags(data.tags)
+}
+
+// Function to create user tag sorting system
+const createSortTags = (tags) => {
+    const tagContainer = document.querySelector('.user-tags-container')
+    tagContainer.innerHTML = ''
+
+    tags.forEach(tag => {
+        const userTagItem = document.createElement('div')
+        userTagItem.classList.add('user-tag')
+        userTagItem.textContent = tag.tagName
+        userTagItem.style.backgroundColor = tag.tagColor
+        tagContainer.appendChild(userTagItem)
+
+        userTagItem.addEventListener('click', () => { 
+            const uiTasks = document.querySelectorAll('.task:not(.hidden)')
+
+            // ! TAG SORT SYSTEM
+
+            console.log(uiTasks)
+        })
+    })
 }
 
 // function to create and display tasks on html
@@ -156,9 +178,12 @@ const displayTasks = (name, due, description, tags, id) => {
         tags.forEach(tag => {
             if(tag){
                 const tagItem = document.createElement('div')
-                tagItem.textContent = tag.tagName
+
                 tagItem.style.backgroundColor = tag.tagColor
                 tagItem.classList.add('task-tag')
+                
+                const tagName = document.createElement('p')
+                tagName.textContent = tag.tagName
 
                 const deleteTagBtn = document.createElement('button')
                 deleteTagBtn.textContent = 'X'
@@ -166,6 +191,7 @@ const displayTasks = (name, due, description, tags, id) => {
                     deleteTagFromTask(tags.indexOf(tag), id)
                 })
 
+                tagItem.appendChild(tagName)
                 tagItem.appendChild(deleteTagBtn)
                 tagsContainer.appendChild(tagItem)
             }
@@ -259,7 +285,6 @@ const findRemainingTime = (taskDate, currentDate) => {
     if(taskDate.getDate() == currentDate.getDate()){
         return 'Today'
     }else if(taskDate < currentDate){
-        console.log(taskDate.getTime(), currentDate.getTime())
         return 'Overdue'
     }else{
         const timeDiff = taskDate - currentDate
