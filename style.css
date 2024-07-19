@@ -328,6 +328,32 @@ button{
     top: 60px;
 }
 
+/* ! SORTING */
+
+.sorting{
+    /* background-color: red; */
+    margin-top: 30px;
+}
+
+.time-sort{
+    display: flex;
+    gap: 10px;
+}
+
+.time-sort div{
+    color: #fff;
+    padding: 3px 20px;
+    line-height: 20px;
+    border-radius: 15px;
+    font-size: 12px;
+    height: 30px;
+    border: solid var(--grey-text);
+    cursor: pointer;
+}
+
+.time-sort-active{
+    border-color: var(--accent) !important;
+}
 
 /* ! TASKS CONTAINER */
 
@@ -335,7 +361,7 @@ button{
     padding: 0px;
     height: 70vh;
     overflow: scroll;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .task:last-child{

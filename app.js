@@ -222,19 +222,19 @@ const displayTasks = (name, due, description, tags, id) => {
     task.appendChild(descriptionItem)
     
     // due
+    const dueItem = document.createElement('div')
+
+    const remainingItem = document.createElement('span')
+    dueItem.classList.add('due-container')
+
     if(!due == ''){
         const taskDate = new Date(due)
         const currentDate = new Date()
 
         const remainingTime = findRemainingTime(taskDate, currentDate)
 
-        console.log(due == '')
-
-        const dueItem = document.createElement('div')
-        dueItem.classList.add('due-container')
         dueItem.innerHTML = `<img src="./assets/due.png" height="20" alt=" "/> <p> Due to: ${due} </p>`
         
-        const remainingItem = document.createElement('span')
         remainingItem.textContent = `(${remainingTime})`;
         switch (remainingTime) {
             case "Today":
@@ -247,9 +247,11 @@ const displayTasks = (name, due, description, tags, id) => {
                 remainingItem.classList.add('due-span')
         }
 
-        dueItem.appendChild(remainingItem)
-        task.appendChild(dueItem)
+    }else{
+        dueItem.textContent = '';
     }    
+    dueItem.appendChild(remainingItem)
+    task.appendChild(dueItem)
 
 }
 
