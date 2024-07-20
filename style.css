@@ -34,7 +34,6 @@ body{
     background-color: var(--main-bg);
     display: flex;
     justify-content: center;
-    align-items: center;
     height: 100vh;
     font-family: var(--font);
     overflow: hidden;
@@ -52,6 +51,7 @@ body{
     align-items: center;
     padding-top: 25px;
     box-shadow: var(--shadow);
+    align-self: center;
 }
 
 @media (max-width: 700px) {
@@ -59,6 +59,7 @@ body{
         height: 100vh;
         width: 100vw;
         padding-top: 100px;
+        margin-top: -50px;
     }
 }
 
@@ -197,7 +198,8 @@ body{
 .username{
     color: white;
     font-size: 24px;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
+    margin-top: 50px;
 }
 
 button{
@@ -369,11 +371,20 @@ button{
     padding: 2px 10px;
     border-radius: 10px;
     cursor: pointer;
+    opacity: .5;
     /* margin-top: 5px; */
 }
 
 .user-tag-hidden{
     opacity: .5;
+}
+
+.hidden-bs{
+    display: none;
+}
+
+.usertag-active{
+    opacity: 1;
 }
 
 /* ! TASKS CONTAINER */
@@ -497,11 +508,10 @@ button{
     min-width: 160px;
     height: 150px;
     overflow: scroll;
-    display: inline-block;
-    border-radius: 10px;
     padding: 5px 15px 15px 15px;
+    border-radius: 10px;
     margin-left: 10px;
-    position: absolute;
+    display: inline-block;
 }
 
 .all-tags-list div {
@@ -509,7 +519,7 @@ button{
     display: flex;
     justify-content: space-between;
     margin: 10px 0px 10px 0px;
-}
+}   
 
 .all-tags-list button {
     box-shadow: none;

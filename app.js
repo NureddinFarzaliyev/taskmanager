@@ -132,11 +132,26 @@ const createSortTags = (tags) => {
         tagContainer.appendChild(userTagItem)
 
         userTagItem.addEventListener('click', () => { 
-            const uiTasks = document.querySelectorAll('.task:not(.hidden)')
 
-            // ! TAG SORT SYSTEM
+            if(!userTagItem.classList.contains('usertag-active')){
+                console.log(`Clicked on tag ${tag.tagName}`)
+                const uiTasks = document.querySelectorAll('.task:not(.hidden-bs)')
+                showAllTasksHBT()
+        
+                uiTasks.forEach(task => {
+                    thisTaskTags = task.getAttribute('data-tags')
+                    if(!thisTaskTags.includes(tag.tagName)){
+                        task.classList.add('hidden')
+                        changeActiveStyle('usertag-active', userTagItem, ...document.querySelectorAll('.user-tag'))
+                        userTagItem.classList.add('usertag-active')
+                    }
+                })
+            }else{
+                showAllTasksHBT();
+                userTagItem.classList.remove('usertag-active')
+            }
 
-            console.log(uiTasks)
+            
         })
     })
 }
@@ -145,8 +160,9 @@ const createSortTags = (tags) => {
 const displayTasks = (name, due, description, tags, id) => {
     const task = document.createElement('div')
     task.classList.add('task')
+    task.setAttribute('data-tags', tags.map(tag => tag.tagName))
     document.querySelector('.tasks-container').appendChild(task)
-
+    
     const taskHeader = document.createElement('div')
     taskHeader.classList.add('task-header')
 
@@ -240,7 +256,8 @@ const displayTasks = (name, due, description, tags, id) => {
         allTagsList.classList.add('hidden')
         // }
     })
-    addTagBtn.appendChild(allTagsList)    
+    task.appendChild(allTagsList)    // This thing must be styled properly
+    
     // description
     const descriptionItem = document.createElement('div')
     descriptionItem.textContent = description

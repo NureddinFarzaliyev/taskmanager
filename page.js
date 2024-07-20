@@ -8,31 +8,23 @@ const register = document.querySelector('.register')
 
 switchLogin.addEventListener('click', () => {
     if(!switchLogin.classList.contains('auth-focus')){
-        switchLogin.classList.add('auth-focus')
-        switchLogin.classList.remove('auth-no-focus')
-        switchRegister.classList.add('auth-no-focus')
-        switchRegister.classList.remove('auth-focus')
+        changeActiveStyle('auth-focus', switchLogin, switchRegister)
+        changeActiveStyle('auth-no-focus', switchRegister, switchLogin)
+        changeActiveStyle('shown-auth', login, register)
+        changeActiveStyle('hidden-auth', register, login)
         switchBg.classList.remove('focus-bg-right')
         switchBg.classList.add('focus-bg-left')
-        login.classList.add('shown-auth')
-        login.classList.remove('hidden-auth')
-        register.classList.remove('shown-auth')
-        register.classList.add('hidden-auth')
     }
 })
 
 switchRegister.addEventListener('click', () => {
     if(!switchRegister.classList.contains('auth-focus')){
-        switchRegister.classList.add('auth-focus')
-        switchRegister.classList.remove('auth-no-focus')
-        switchLogin.classList.remove('auth-focus')
-        switchLogin.classList.add('auth-no-focus')
+        changeActiveStyle('auth-focus', switchRegister, switchLogin)
+        changeActiveStyle('auth-no-focus', switchLogin, switchRegister)
+        changeActiveStyle('shown-auth', register, login)
+        changeActiveStyle('hidden-auth', login, register)
         switchBg.classList.remove('focus-bg-left')
         switchBg.classList.add('focus-bg-right')
-        register.classList.add('shown-auth')
-        register.classList.remove('hidden-auth')
-        login.classList.remove('shown-auth')
-        login.classList.add('hidden-auth')
     }
 })
 
@@ -53,7 +45,6 @@ const newTagContainer = document.querySelector('.new-tag')
 
 document.querySelector('.cancel-new-tag').addEventListener('click', () => {
     newTagContainer.classList.add('hidden')
-    console.log('hi')
 })
 
 // ! SORT BY TIME
@@ -65,24 +56,36 @@ const todayBtn = document.querySelector('.today-btn');
 const showAllTasks = () => {
     const tasks = document.querySelectorAll('.task')
     for (let i = 0; i < tasks.length; i++) {
+        tasks[i].classList.remove('hidden-bs')
+    }
+}
+
+const showAllTasksHBT = () => {
+    const tasks = document.querySelectorAll('.task')
+    for (let i = 0; i < tasks.length; i++) {
         tasks[i].classList.remove('hidden')
     }
 }
 
 document.querySelector('.update-tasks').addEventListener('click', () => {
-    alltasksBtn.classList.add('time-sort-active')
-    todayBtn.classList.remove('time-sort-active')
-    overdueBtn.classList.remove('time-sort-active')
+    changeActiveStyle('time-sort-active', alltasksBtn, todayBtn, overdueBtn)
     showAllTasks()
+    showAllTasksHBT()
 })
+
+const changeActiveStyle = (classname, add, ...remove) => {
+    remove.forEach(item => {
+        item.classList.remove(classname)
+    })
+    add.classList.add(classname)
+}
 
 alltasksBtn.addEventListener('click', () => {
     if(!alltasksBtn.classList.contains("time-sort-active")){
-        alltasksBtn.classList.add('time-sort-active')
-        todayBtn.classList.remove('time-sort-active')
-        overdueBtn.classList.remove('time-sort-active')
-
+        changeActiveStyle('time-sort-active', alltasksBtn, todayBtn, overdueBtn)
+        if(document.querySelector('.usertag-active')) document.querySelector('.usertag-active').classList.remove('usertag-active')
         showAllTasks()
+        showAllTasksHBT()
     }
 })
 
@@ -91,15 +94,12 @@ overdueBtn.addEventListener('click', () => {
     const dues = document.querySelectorAll('.due-container span')
 
     if(!overdueBtn.classList.contains("time-sort-active")){
-        overdueBtn.classList.add('time-sort-active')
-        todayBtn.classList.remove('time-sort-active')
-        alltasksBtn.classList.remove('time-sort-active')
-
+        changeActiveStyle('time-sort-active', overdueBtn, todayBtn, alltasksBtn)
         showAllTasks();
 
         for (let i = 0; i < dues.length; i++) {
             if(!dues[i].classList.contains("overdue")){
-                tasks[i].classList.add('hidden')
+                tasks[i].classList.add('hidden-bs')
             }
             
         }
@@ -109,17 +109,14 @@ overdueBtn.addEventListener('click', () => {
 todayBtn.addEventListener('click', () => {
     const tasks = document.querySelectorAll('.task')
     const dues = document.querySelectorAll('.due-container span')
-
-    showAllTasks();
-
+    
     if(!todayBtn.classList.contains("time-sort-active")){
-        todayBtn.classList.add('time-sort-active')
-        overdueBtn.classList.remove('time-sort-active')
-        alltasksBtn.classList.remove('time-sort-active')
+        changeActiveStyle('time-sort-active', todayBtn, overdueBtn, alltasksBtn)
+        showAllTasks();
 
         for (let i = 0; i < dues.length; i++) {
             if(!dues[i].classList.contains("today")){
-                tasks[i].classList.add('hidden')
+                tasks[i].classList.add('hidden-bs')
             }
             
         }
